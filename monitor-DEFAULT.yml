@@ -1,0 +1,9 @@
+log:
+  file: <some path>/monitor.log
+mailer:
+  smtphost: smtp.somehost.com
+monitors:
+  - name: Monitor Name
+    host: somehost.com
+    port: 80
+    find_string: Some string
