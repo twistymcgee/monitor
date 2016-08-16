@@ -1,12 +1,12 @@
 import http.client, os, logging
 
 class Monitor:
-    def __init__(self, notifier, service_name, url, string_to_find, port=80):
+    def __init__(self, notifier, config):
         self.logger = logging.getLogger('MonitorApp.Monitor')
-        self.service_name = service_name
-        self.url = url
-        self.port = port
-        self.string_to_find = string_to_find
+        self.service_name = config['name']
+        self.url = config['host']
+        self.port = config['port']
+        self.string_to_find = config['find_string']
         self.reason = None
         self.notifier = notifier
 

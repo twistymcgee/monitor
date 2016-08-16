@@ -1,11 +1,11 @@
 import smtplib, logging
 
 class Mailer:
-    def __init__(self, smtpserver, to_address, from_address):
+    def __init__(self, config):
         self.logger = logging.getLogger('MonitorApp.Mailer')
-        self.smtpserver = smtpserver
-        self.to_address = to_address
-        self.from_address = from_address
+        self.smtpserver = config['smtphost']
+        self.to_address = config['to_address']
+        self.from_address = config['from_address']
 
     def sendmail(self, subject, message):
         self.logger.info("Sending message")

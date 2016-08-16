@@ -11,11 +11,11 @@ class MonitorApp():
         handler = logging.FileHandler(config['log']['file'])
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
-        self.notifier = mailer.Mailer(config['mailer']['smtphost'], config['mailer']['to_address'], config['mailer']['from_address'])
+        self.notifier = mailer.Mailer(config['mailer'])
         self.monitors = []
         for mon in config['monitors']:
             self.logger.info("Adding monitor " + mon['name'])
-            self.monitors.append(monitor.Monitor(self.notifier, mon['name'], mon['host'], mon['find_string'], mon['port']))
+            self.monitors.append(monitor.Monitor(self.notifier, mon))
 
     def run(self):
         self.logger.info("Checking monitor")
