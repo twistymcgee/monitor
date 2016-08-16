@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-import monitor, mailer, os, time, logging, yaml
+import monitor, mailer, os, time, logging, yaml, getopt, sys
 
 class MonitorApp():
 
@@ -23,7 +23,20 @@ class MonitorApp():
             mon.check()
 
 if __name__ == "__main__":
-    with open('monitor.yml', 'r') as ymlfile:
+    configfile = None
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],"c:",["config="])
+    except getopt.GetoptError:
+        print('run_monitor -c <configfile>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ('-c', '--config'):
+            configfile = arg
+    if configfile == None:
+        print('You must supply a config file')
+        print('run_monitor -c <configfile>')
+        sys.exit(2)
+    with open(configfile, 'r') as ymlfile:
         config = yaml.load(ymlfile)
     monitor_app = MonitorApp(config)
     monitor_app.run()
