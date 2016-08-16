@@ -5,13 +5,13 @@ import monitor, mailer, os, time, logging, yaml, getopt, sys
 class MonitorApp():
 
     def __init__(self, config):
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('MonitorApp')
         self.logger.setLevel(logging.DEBUG)
         formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         handler = logging.FileHandler(config['log']['file'])
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
-        self.notifier = mailer.Mailer(config['mailer']['smtphost'])
+        self.notifier = mailer.Mailer(config['mailer']['smtphost'], config['mailer']['to_address'], config['mailer']['from_address'])
         self.monitors = []
         for mon in config['monitors']:
             self.logger.info("Adding monitor " + mon['name'])

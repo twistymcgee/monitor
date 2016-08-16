@@ -1,7 +1,8 @@
-import http.client, os
+import http.client, os, logging
 
 class Monitor:
     def __init__(self, notifier, service_name, url, string_to_find, port=80):
+        self.logger = logging.getLogger('MonitorApp.Monitor')
         self.service_name = service_name
         self.url = url
         self.port = port
@@ -10,7 +11,7 @@ class Monitor:
         self.notifier = notifier
 
     def check(self):
-        print('Checking service ' + self.service_name + ' url ' + self.url)
+        self.logger.info('Checking service ' + self.service_name + ' url ' + self.url)
         try:
             connection = http.client.HTTPConnection(self.url, self.port)
             connection.connect()
@@ -28,17 +29,17 @@ class Monitor:
             self.set_down_state()
 
     def set_up_state(self):
-        print(self.get_service_name() + " Up")
+        self.logger.info(self.get_service_name() + " Up")
         # if previously in a failed state, change it
         if self.in_failed_state():
             self.remove_token_file()
-            self.notifier.sendmail('corey.mosher@gmail.com', 'corey.mosher@gmail.com', self.get_service_name() + ' Up', self.get_service_name() + " Up!")
+            self.notifier.sendmail(self.get_service_name() + ' Up', self.get_service_name() + " Up!")
 
     def set_down_state(self):
-        print(self.get_service_name() + " Down! " + self.get_reason())
+        self.logger.info(self.get_service_name() + " Down! " + self.get_reason())
         if not self.in_failed_state():
             self.create_token_file()
-            self.notifier.sendmail('corey.mosher@gmail.com', 'corey.mosher@gmail.com', self.get_service_name() + ' Down', self.get_service_name() + " Down! " + self.get_reason())
+            self.notifier.sendmail(self.get_service_name() + ' Down', self.get_service_name() + " Down! " + self.get_reason())
 
 
     def get_reason(self):

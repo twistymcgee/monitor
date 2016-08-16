@@ -1,21 +1,21 @@
-import smtplib
+import smtplib, logging
 
 class Mailer:
-    def __init__(self, smtpserver):
-
+    def __init__(self, smtpserver, to_address, from_address):
+        self.logger = logging.getLogger('MonitorApp.Mailer')
         self.smtpserver = smtpserver
+        self.to_address = to_address
+        self.from_address = from_address
 
-    def sendmail(self, to_address, from_address, subject, message):
-        print("Sending message")
+    def sendmail(self, subject, message):
+        self.logger.info("Sending message")
         server = smtplib.SMTP(self.smtpserver)
-        #server.ehlo()
-        #server.starttls()
         msg = "\r\n".join([
-            "From: " + from_address,
-            "To: " + to_address,
+            "From: " + self.from_address,
+            "To: " + self.to_address,
             "Subject: " + subject,
             "",
             message
         ])
-        server.sendmail(from_address, to_address, msg)
+        server.sendmail(self.from_address, self.to_address, msg)
         server.quit()
