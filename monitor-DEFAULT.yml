@@ -1,9 +1,15 @@
 log:
-  file: <some path>/monitor.log
+  file: /<path to log file>/monitor.log
 mailer:
-  smtphost: smtp.somehost.com
+  smtphost: <your smtp server>
+  to_address: <email to notify>
+  from_address: <email to send from>
 monitors:
-  - name: Monitor Name
-    host: somehost.com
-    port: 80
-    find_string: Some string
+  - name: Service1
+    host: <service host name>
+    port: <service port>
+    find_string: <string to look for indicating up>
+  - name: Service1
+    host: <service host name>
+    port: <service port>
+    find_string: <string to look for indicating up>
