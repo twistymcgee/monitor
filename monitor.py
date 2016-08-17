@@ -31,6 +31,9 @@ class Monitor:
         except socket.timeout:
             self.reason = 'Timed out'
             self.set_down_state()
+        except OSError as err:
+            self.reason = err.args[1]
+            self.set_down_state()
 
     def set_up_state(self):
         self.logger.info(self.get_service_name() + " Up")
