@@ -24,10 +24,12 @@ monitors:
     host: <service host name>
     port: <service port>
     find_string: <string to look for indicating up>
+    timeout: <connection timeout in seconds>
   - name: Service1
     host: <service host name>
     port: <service port>
     find_string: <string to look for indicating up>
+    timeout: <connection timeout in seconds>
 ```
 
 You can have as many monitors as you want.
