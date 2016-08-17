@@ -1,4 +1,4 @@
-import http.client, os, logging
+import http.client, os, logging, socket
 
 class Monitor:
     def __init__(self, notifier, config):
@@ -7,13 +7,14 @@ class Monitor:
         self.url = config['host']
         self.port = config['port']
         self.string_to_find = config['find_string']
+        self.timeout = config['timeout']
         self.reason = None
         self.notifier = notifier
 
     def check(self):
         self.logger.info('Checking service ' + self.service_name + ' url ' + self.url)
         try:
-            connection = http.client.HTTPConnection(self.url, self.port)
+            connection = http.client.HTTPConnection(self.url, self.port, timeout=self.timeout)
             connection.connect()
             connection.request('GET', '/')
             response = connection.getresponse()
@@ -26,6 +27,9 @@ class Monitor:
                 self.set_down_state()
         except ConnectionRefusedError:
             self.reason = 'Connection refused'
+            self.set_down_state()
+        except socket.timeout:
+            self.reason = 'Timed out'
             self.set_down_state()
 
     def set_up_state(self):
