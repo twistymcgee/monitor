@@ -17,6 +17,8 @@ log:
   file: /<path to log file>/monitor.log
 mailer:
   smtphost: <your smtp server>
+  to_address: <email to notify>
+  from_address: <email to send from>
 monitors:
   - name: Service1
     host: <service host name>
