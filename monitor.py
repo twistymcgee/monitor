@@ -25,6 +25,13 @@ class Monitor:
             self.timeout = 20
         else:
             self.timeout = config['timeout']
+        if 'path' not in config:
+            # default to /
+            self.logger.info("'path' not specified in config for '%s', defaulting to /", self.service_name)
+            self.path = '/'
+        else:
+            self.path = config['path']
+
 
     def validate_config(self, config):
         if ('name' not in config):
@@ -39,7 +46,7 @@ class Monitor:
         try:
             connection = http.client.HTTPConnection(self.url, self.port, timeout=self.timeout)
             connection.connect()
-            connection.request('GET', '/')
+            connection.request('GET', self.path)
             response = connection.getresponse()
             html = response.read().decode()
             result = html.find(self.string_to_find)
